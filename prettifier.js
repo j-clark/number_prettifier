@@ -1,26 +1,41 @@
 PRETTIFIER = (function() {
 
-  function _isOrderOfMillions(num) {
-    if(num.length > 6 && num.length < 10)
+  var orders = {
+    million: {
+      suffix: 'M',
+      minLength: 7,
+      maxLength: 9
+    },
+    billion: {
+      suffix: 'B',
+      minLength: 10,
+      maxLength: 12
+    }
+  };
+
+  function _isOrderOf(num, orders) {
+    if(num.length >= orders.minLength && num.length <= orders.maxLength)
       return true;
     return false;
   }
 
-  function _truncateWholeMillion(num) {
+  function _truncate(num, orders) {
     var 
       len = num.length,
-      digitsLessThanMillion = 6
-      digitsToGet = len - digitsLessThanMillion;
+      digitsToGet = len - (orders.minLength - 1);
 
     return num.substr(0, digitsToGet);
   }
 
   function prettify(num) {
     num = num.toString();
-    if(_isOrderOfMillions(num)) {
-      num = _truncateWholeMillion(num);
+    if(_isOrderOf(num, orders.million)) {
+      return _truncate(num, orders.million) + orders.million.suffix;
+    } else if(_isOrderOf(num, orders.billion)) {
+      return _truncate(num, orders.billion) + orders.billion.suffix;
+    } else {
+      return num;
     }
-    return num + 'M';
   }
 
   return {
