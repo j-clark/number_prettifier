@@ -20,4 +20,14 @@ describe('prettifier', function() {
     expect(PRETTIFIER.prettify(2000000000)).toEqual('2B');
   });
 
+  it('should prettify whole trillions', function() {
+    expect(PRETTIFIER.prettify(1000000000000)).toEqual('1T');
+    expect(PRETTIFIER.prettify(2000000000000)).toEqual('2T');
+  });
+
+  it('should prettify fractional big numbers', function() {
+    expect(PRETTIFIER.prettify(1500000)).toEqual('1.5M');
+    expect(PRETTIFIER.prettify(2600000000)).toEqual('2.6B');
+  });
+
 });
