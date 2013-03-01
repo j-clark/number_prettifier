@@ -20,7 +20,7 @@ PRETTIFIER = (function() {
         maxLength: 15
       }
     };
-    
+
 
   function prettify(input) {
     number = input.toFixed(0).toString();
@@ -38,6 +38,7 @@ PRETTIFIER = (function() {
     for(var key in orders) {
       if(_isOrderOf(orders[key])) {
         order = orders[key];
+        return;
       }
     }
   }
