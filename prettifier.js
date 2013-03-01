@@ -1,51 +1,67 @@
 PRETTIFIER = (function() {
 
-  var orders = {
-    million: {
-      suffix: 'M',
-      minLength: 7,
-      maxLength: 9
-    },
-    billion: {
-      suffix: 'B',
-      minLength: 10,
-      maxLength: 12
-    },
-    trillion: {
-      suffix: 'T',
-      minLength: 13,
-      maxLength: 15
-    }
-  };
+  var 
+    number = null,
+    order  = null,
+    orders = {
+      million: {
+        suffix: 'M',
+        minLength: 7,
+        maxLength: 9
+      },
+      billion: {
+        suffix: 'B',
+        minLength: 10,
+        maxLength: 12
+      },
+      trillion: {
+        suffix: 'T',
+        minLength: 13,
+        maxLength: 15
+      }
+    };
+    
 
-  function _isOrderOf(num, orders) {
-    if(num.length >= orders.minLength && num.length <= orders.maxLength)
+  function prettify(input) {
+    number = input.toFixed(0).toString();
+    _determineOrderOfMagnitude();
+
+    if(order !== null) {
+      _truncate();
+      _addSuffix();
+    } 
+
+    return number; 
+  }
+
+  function _determineOrderOfMagnitude() {
+    for(var key in orders) {
+      if(_isOrderOf(orders[key])) {
+        order = orders[key];
+      }
+    }
+  }
+
+  function _isOrderOf(orderToTry) {
+    if(number.length >= orderToTry.minLength && number.length <= orderToTry.maxLength)
       return true;
     return false;
   }
 
-  function _truncate(num, orders) {
+  function _truncate() {
     var 
-      len = num.length,
-      digitsToGet = len - orders.minLength + 2;
+      len = number.length,
+      digitsToGet = len - order.minLength + 2;
 
-    return +( num.substr(0, digitsToGet) ) / 10;
+    number = +( number.substr(0, digitsToGet) ) / 10;
   }
 
-  function prettify(num) {
-    num = num.toString();
-    if(_isOrderOf(num, orders.million)) {
-      return _truncate(num, orders.million) + orders.million.suffix;
-    } else if(_isOrderOf(num, orders.billion)) {
-      return _truncate(num, orders.billion) + orders.billion.suffix;
-    } else if(_isOrderOf(num, orders.trillion)) {
-      return _truncate(num, orders.trillion) + orders.trillion.suffix;
-    } else {
-      return num;
-    }
+  function _addSuffix() {
+    number = number + order.suffix;
   }
 
   return {
     prettify: prettify
   };
+  
 })();

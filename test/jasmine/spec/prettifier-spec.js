@@ -30,4 +30,9 @@ describe('prettifier', function() {
     expect(PRETTIFIER.prettify(2600000000)).toEqual('2.6B');
   });
 
+  it('should prettify non-whole numbers', function() {
+    expect(PRETTIFIER.prettify(1500000.1)).toEqual('1.5M');
+    expect(PRETTIFIER.prettify(2600000000.23454)).toEqual('2.6B');
+  });
+
 });
